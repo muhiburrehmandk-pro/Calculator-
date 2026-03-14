@@ -2,25 +2,25 @@
 const StepByStep = {
 
     // Generic helper for high-quality math line rendering
-    _renderRow: (str, color, options = {}) => {
+    _renderRow: (data, color, options = {}) => {
         const {
-            fontSize = '2rem',
-            charWidth = '1.4rem',
-            marginBottom = '12px',
+            fontSize = '3.2rem', // Boosted for even better visibility
+            charWidth = '1.8rem', // Keeping spacing constant as requested
+            marginBottom = '16px',
             isMathLine = false,
             operator = '',
             opColor = 'chalk-white'
         } = options;
 
-        let chars = str.split('');
+        let items = Array.isArray(data) ? data : data.split('');
         let html = `<div style="display: flex; justify-content: flex-end; color: var(--${color}); font-size: ${fontSize}; line-height: 1; margin-bottom: ${marginBottom}; ${isMathLine ? 'border-bottom: 2px solid var(--chalk-white); padding-bottom: 4px;' : ''}">`;
 
         if (operator) {
             html += `<span style="color: var(--${opColor}); margin-right: auto;">${operator}</span>`;
         }
 
-        chars.forEach(c => {
-            if (c === ' ') {
+        items.forEach(c => {
+            if (c === ' ' || c === '' || c === null) {
                 html += `<span style="width: ${charWidth}; display: inline-block;"></span>`;
             } else {
                 html += `<span style="width: ${charWidth}; text-align: center; display: inline-block;">${c}</span>`;
@@ -37,7 +37,7 @@ const StepByStep = {
             str += c > 0 ? c.toString() : ' ';
         });
         // Carries are usually smaller but still need spacing
-        return StepByStep._renderRow(str, 'chalk-red', { fontSize: '1.2rem', charWidth: '1.4rem', marginBottom: '4px' });
+        return StepByStep._renderRow(str, 'chalk-red', { fontSize: '2.0rem', charWidth: '1.8rem', marginBottom: '8px' });
     },
 
     renderAddition: (num1Str, num2Str, container) => {
@@ -79,7 +79,7 @@ const StepByStep = {
         // Generate HTML Layout
         const totalWidth = Math.max(num1Str.length, num2Str.length) + 1; // +1 for operator space
 
-        let html = '<div style="display: flex; flex-direction: column; align-items: flex-end; padding: 10px; font-family: var(--font-chalk);">';
+        let html = '<div style="display: inline-flex; flex-direction: column; align-items: flex-end; padding: 10px; font-family: var(--font-chalk); min-width: 100%;">';
 
         // Carries
         if (carries.some(c => c > 0)) {
@@ -107,8 +107,51 @@ const StepByStep = {
             return;
         }
 
-        const totalWidth = Math.max(num1Str.length, num2Str.length) + 1;
-        let html = '<div style="display: flex; flex-direction: column; align-items: flex-end; padding: 10px; font-family: var(--font-chalk);">';
+        const n1 = num1Str.split('').reverse().map(Number);
+        const n2 = num2Str.split('').reverse().map(Number);
+        const maxLength = Math.max(n1.length, n2.length);
+
+        const totalWidth = maxLength + 1;
+        let borrows = new Array(maxLength).fill(null);
+        let digits = [...n1];
+
+        // Ensure digits has enough length
+        while (digits.length < maxLength) digits.push(0);
+
+        for (let i = 0; i < maxLength; i++) {
+            let d2 = i < n2.length ? n2[i] : 0;
+            if (digits[i] < d2) {
+                // Find next non-zero digit to borrow from
+                let j = i + 1;
+                while (j < digits.length && digits[j] === 0) {
+                    j++;
+                }
+                
+                if (j < digits.length) {
+                    // Start borrowing backward
+                    for (let k = j; k > i; k--) {
+                        digits[k]--;
+                        borrows[k] = digits[k];
+                        digits[k - 1] += 10;
+                        borrows[k - 1] = digits[k - 1];
+                    }
+                }
+            }
+        }
+
+        let html = '<div style="display: inline-flex; flex-direction: column; align-items: flex-end; padding: 10px; font-family: var(--font-chalk); min-width: 100%;">';
+
+        // Render Borrows
+        if (borrows.some(b => b !== null)) {
+            const borrowItems = new Array(totalWidth).fill(' ');
+            const reversedBorrows = [...borrows].reverse();
+            for (let i = 0; i < reversedBorrows.length; i++) {
+                if (reversedBorrows[i] !== null) {
+                    borrowItems[totalWidth - reversedBorrows.length + i] = reversedBorrows[i].toString();
+                }
+            }
+            html += StepByStep._renderRow(borrowItems, 'chalk-red', { fontSize: '1.6rem', charWidth: '1.8rem', marginBottom: '4px' });
+        }
 
         html += StepByStep._renderRow(num1Str.padStart(totalWidth, ' '), 'chalk-white');
         html += StepByStep._renderRow(num2Str.padStart(totalWidth - 1, ' '), 'chalk-white', { isMathLine: true, operator: '−', opColor: 'chalk-white' });
@@ -129,7 +172,7 @@ const StepByStep = {
 
         const totalWidth = Math.max(num1Str.length, num2Str.length, result.length) + 1;
 
-        let html = `<div style="display: flex; flex-direction: column; align-items: flex-end; padding: 10px; font-family: var(--font-chalk);">`;
+        let html = `<div style="display: inline-flex; flex-direction: column; align-items: flex-end; padding: 10px; font-family: var(--font-chalk); min-width: 100%;">`;
         html += StepByStep._renderRow(num1Str.padStart(totalWidth, ' '), 'chalk-white');
         html += StepByStep._renderRow(num2Str.padStart(totalWidth - 1, ' '), 'chalk-white', { isMathLine: true, operator: '×', opColor: 'chalk-white' });
 
@@ -160,19 +203,19 @@ const StepByStep = {
         const quotientStr = Math.floor(dividend / divisor).toString();
         const dividendStr = dividend.toString();
 
-        // Local helper to keep division compact
+        // Local helper to keep division consistent with new large styling
         const __renderDivisionRow = (str, color, isMathLine = false, operator = '', opColor = '') => {
             return StepByStep._renderRow(str, color, {
-                fontSize: '1.4rem',
-                charWidth: '0.9rem',
-                marginBottom: '2px',
+                fontSize: '2.8rem',
+                charWidth: '1.8rem',
+                marginBottom: '8px',
                 isMathLine,
                 operator,
                 opColor
             });
         };
 
-        let html = `<div style="display: flex; flex-direction: column; align-items: flex-end; padding: 10px; font-family: var(--font-chalk); overflow-x: auto;">`;
+        let html = `<div style="display: inline-flex; flex-direction: column; align-items: flex-end; padding: 10px; font-family: var(--font-chalk); overflow-x: auto; min-width: 100%;">`;
 
         // 1. Render the Quotient on top (right-aligned to perfectly match the dividend width below it)
         const qPadding = dividendStr.length - quotientStr.length;
@@ -180,11 +223,11 @@ const StepByStep = {
         html += __renderDivisionRow(qPadded, 'chalk-blue');
 
         // 2. Render the Divisor | Dividend container line
-        html += `<div style="display: flex; justify-content: flex-end; align-items: flex-end;">`;
+        html += `<div style="display: flex; justify-content: flex-end; align-items: stretch;">`;
         // Divisor on the outside left
-        html += `<div style="color: var(--chalk-red); font-size: 1.4rem; margin-right: 5px; line-height: 1.2;">${divisor}</div>`;
+        html += `<div style="color: var(--chalk-red); font-size: 2.8rem; margin-right: 15px; line-height: 1; display: flex; align-items: flex-end;">${divisor}</div>`;
         // Dividend inside the box border
-        html += `<div style="border-left: 2px solid var(--chalk-white); border-top: 2px solid var(--chalk-white); padding-left: 5px; border-top-left-radius: 4px;">`;
+        html += `<div style="border-left: 3px solid var(--chalk-white); border-top: 3px solid var(--chalk-white); padding-left: 10px; border-top-left-radius: 6px;">`;
         html += __renderDivisionRow(dividendStr, 'chalk-white');
         html += `</div></div>`; // End Dividend wrapper and row grid
 
@@ -238,7 +281,7 @@ const StepByStep = {
 
     renderSquareRoot: (val, result, container) => {
         container.innerHTML = `<div style="padding-bottom:10px;">
-            <div style="color: var(--chalk-blue)">√<span style="border-top: 2px solid var(--chalk-blue)">${val}</span></div>
+            <div style="font-size: 3.2rem; color: var(--chalk-blue)">√<span style="border-top: 2px solid var(--chalk-blue)">${val}</span></div>
         </div>`.replace(/\n\s*/g, '');
     },
 

@@ -25,9 +25,18 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => handleInput(button));
     });
 
-    // History Toggle
+    const closeHistoryBtn = document.getElementById('close-history');
+
+    // History Toggle (Open)
     historyToggle.addEventListener('click', () => {
-        historyPanel.classList.toggle('hidden');
+        historyPanel.classList.remove('hidden');
+        keypadContainer.classList.add('hidden');
+    });
+
+    // Close History
+    closeHistoryBtn.addEventListener('click', () => {
+        historyPanel.classList.add('hidden');
+        keypadContainer.classList.remove('hidden');
     });
 
     // Clear History
@@ -36,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         saveHistory();
         renderHistory();
         historyPanel.classList.add('hidden');
+        keypadContainer.classList.remove('hidden');
     });
 
     // New Operation
@@ -108,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Setup initial display for operator
         const opSymbol = getOperatorSymbol(op);
         const totalWidth = currentInput.length + 1;
-        stepByStepArea.innerHTML = `<div style="display: flex; flex-direction: column; align-items: flex-end; padding: 10px; font-family: var(--font-chalk);">
+        stepByStepArea.innerHTML = `<div style="display: inline-flex; flex-direction: column; align-items: flex-end; padding: 10px; font-family: var(--font-chalk); min-width: 100%;">
             ${StepByStep._renderRow(currentInput.padStart(totalWidth, ' '), 'chalk-white', { operator: opSymbol })}
         </div>`;
     }
@@ -180,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (type === 'square') {
             const result = val * val;
             stepByStepArea.innerHTML = `<div style="padding-bottom:10px;">
-                <div style="color: var(--chalk-blue)">${val}² = <span style="color: var(--chalk-white)">${result}</span></div>
+                <div style="font-size: 3.2rem; color: var(--chalk-blue)">${val}² = <span style="font-size: 3.2rem; color: var(--chalk-white)">${result}</span></div>
             </div>`;
             currentInput = (Math.round(result * 100000) / 100000).toString();
             addToHistory(`${val}² = ${currentInput}`);
@@ -188,7 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Only integers
             if (!Number.isInteger(val) || val <= 1) {
                 currentInput = "Error";
-                stepByStepArea.innerHTML = "Solo enteros > 1";
+                const isEnglish = window.location.pathname.includes('/en/');
+                stepByStepArea.innerHTML = isEnglish ? "Integers > 1 only" : "Solo enteros > 1";
                 isNewOperation = true;
                 updateDisplay();
                 return;
@@ -219,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateDisplay() {
-        mainResultDisplay.textContent = currentInput;
+        mainResultDisplay.innerHTML = `<span>${currentInput}</span>`;
     }
 
     function getOperatorSymbol(action) {
@@ -259,7 +270,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderHistory() {
         historyList.innerHTML = '';
         if (history.length === 0) {
-            historyList.innerHTML = '<li>No hay historial</li>'; // Fallback text, handled generic enough
+            const isEnglish = window.location.pathname.includes('/en/');
+            historyList.innerHTML = isEnglish ? '<li>No history</li>' : '<li>No hay historial</li>'; // Fallback text, handled generic enough
             return;
         }
         history.forEach(item => {
