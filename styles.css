@@ -34,7 +34,7 @@ body {
 body.light-mode {
     --board-bg: #f8f9fa;
     /* Whiteboard */
-    --board-frame: #ced4da;
+    --board-frame: #0a75df;
     /* Aluminum/Light frame */
     --chalk-white: #212529;
     /* Black marker */
@@ -56,10 +56,15 @@ body.light-mode {
 /* Header & Navigation */
 header {
     text-align: center;
-    padding: 16px 8px;
+    padding: 8px 4px;
     background-color: var(--header-bg, #111);
     border-bottom: 2px solid var(--header-border, #444);
     transition: background-color 0.3s, border-color 0.3s;
+}
+
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 1px;
 }
 
 body.light-mode {
@@ -75,8 +80,8 @@ body.light-mode {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 800px;
-    margin: 0 auto 1rem auto;
+    max-width: 1000px;
+    margin: 0 auto 0.3rem auto;
 }
 
 .btn-theme {
@@ -90,23 +95,60 @@ body.light-mode {
 }
 
 .lang-switch {
-    font-size: 0.9rem;
+    display: flex;
+    gap: 10px;
+    align-items: center;
     margin-bottom: 0.5rem;
 }
 
-.lang-switch a {
-    color: #aaa;
+.lang-btn {
+    display: inline-block;
+    padding: 1px 15px;
+    border: 1px solid rgba(252, 6, 6, 0.3);
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
     text-decoration: none;
-    transition: color 0.3s;
+    color: #aaa;
+    background: rgba(231, 167, 167, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.lang-switch a:hover {
+.lang-btn:hover {
     color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.lang-switch .active {
+.lang-btn.active {
     color: var(--chalk-yellow);
-    font-weight: bold;
+    border-color: var(--chalk-yellow);
+    background: rgba(255, 217, 61, 0.15);
+    box-shadow: 0 2px 10px rgba(255, 217, 61, 0.25);
+}
+
+body.light-mode .lang-btn {
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #555;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .lang-btn:hover {
+    color: #000;
+    background: #f8f9fa;
+    border-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .lang-btn.active {
+    color: var(--chalk-yellow);
+    border-color: var(--chalk-yellow);
+    background: rgba(230, 119, 0, 0.1);
 }
 
 h1 {
@@ -120,7 +162,7 @@ h1 {
 main {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 0.7rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -129,19 +171,19 @@ main {
 /* Calculator Container - Blackboard Style */
 .calculator-container {
     width: 100%;
-    max-width: 400px;
-    margin-bottom: 2rem;
+    max-width: 350px;
+    margin-bottom: 1rem;
     perspective: 1000px;
 }
 
 .calculator-board {
     background: var(--board-bg);
-    border: 10px solid var(--board-frame);
+    border: 8px solid var(--board-frame);
     border-radius: 10px;
     box-shadow:
         inset 0 0 20px rgba(0, 0, 0, 0.8),
         0 10px 30px rgba(0, 0, 0, 0.6);
-    padding: 0.8rem;
+    padding: 0.5rem;
     position: relative;
     overflow: hidden;
 }
@@ -163,7 +205,7 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
     z-index: 1;
     position: relative;
 }
@@ -172,16 +214,16 @@ main {
     font-family: var(--font-heading);
     color: var(--chalk-white);
     opacity: 0.7;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 /* Display Area */
 .calculator-display {
     background-color: rgba(0, 0, 0, 0.2);
-    min-height: 60px;
+    min-height: 25px;
     border-radius: 5px;
-    padding: 0.4rem 0.6rem;
-    margin-bottom: 0.5rem;
+    padding: 2px 5px;
+    margin-bottom: 0.2rem;
     position: relative;
     z-index: 1;
     display: flex;
@@ -196,13 +238,54 @@ main {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(26, 37, 29, 0.95);
-    z-index: 10;
-    padding: 1rem;
+    height: 100%;
+    width: 100%;
+    background-color: var(--board-bg);
+    z-index: 100;
+    padding: 1.2rem;
     overflow-y: auto;
     border-radius: 5px;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(12px);
     transition: opacity 0.3s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.history-panel h3 {
+    font-family: var(--font-heading);
+    color: var(--chalk-yellow);
+    margin-bottom: 1rem;
+    text-align: center;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+    padding-bottom: 0.5rem;
+    flex-shrink: 0;
+}
+
+#history-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+/* Custom Chalk Scrollbar */
+.history-panel::-webkit-scrollbar {
+    width: 10px;
+}
+
+.history-panel::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.history-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+body.light-mode .history-panel::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .history-panel.hidden,
@@ -223,9 +306,14 @@ main {
 #history-list {
     list-style: none;
     font-family: var(--font-chalk);
-    font-size: 1.05rem;
-    /* Down from 1.2rem to make history more compact */
+    font-size: 1.4rem;
+    /* Increased font size for history entries */
     margin-bottom: 1rem;
+}
+
+body.light-mode #history-list li {
+    color: #212529;
+    /* Dark text for light mode visibility */
 }
 
 #history-list li {
@@ -242,12 +330,22 @@ main {
 .step-by-step-area {
     font-family: var(--font-chalk);
     color: var(--chalk-white);
-    min-height: 100px;
+    min-height: 65px;
     overflow-x: auto;
     overflow-y: hidden;
     padding: 0.5rem;
     position: relative;
     z-index: 1;
+    /* Direction RTL allows right-align behavior while enabling right-to-left overflow scrolling */
+    direction: rtl;
+    text-align: right;
+}
+
+/* Revert content direction back to LTR so letters/digits aren't swapped */
+.step-by-step-area > * {
+    direction: ltr;
+    display: inline-block;
+    min-width: 100%;
 }
 
 /* Specialized classes to be used by JS for step-by-step rendering */
@@ -273,15 +371,48 @@ main {
     font-weight: bold;
     color: var(--chalk-white);
     text-align: right;
-    word-break: break-all;
-    line-height: 0.9;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    line-height: 1.2;
+    padding-bottom: 5px;
+    padding-right: 7px;
+    direction: rtl;
+}
+
+.main-result > * {
+    direction: ltr;
+    display: inline-block;
+}
+
+/* Custom Scrollbar for results */
+.main-result::-webkit-scrollbar,
+.step-by-step-area::-webkit-scrollbar {
+    height: 8px;
+}
+
+.main-result::-webkit-scrollbar-track,
+.step-by-step-area::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.main-result::-webkit-scrollbar-thumb,
+.step-by-step-area::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+body.light-mode .main-result::-webkit-scrollbar-thumb,
+body.light-mode .step-by-step-area::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 /* Keypad Grid */
 .calculator-keypad {
     display: grid;
     grid-template-columns: repeat(4, 1fr) 1.2fr;
-    gap: 8px;
+    gap: 6px;
     position: relative;
     z-index: 1;
 }
@@ -290,8 +421,8 @@ main {
     font-family: var(--font-heading);
     font-size: 1.6rem;
     /* Balanced size for the new grid */
-    padding: 5px 10px;
-    min-height: 40px;
+    padding: 4px 8px;
+    min-height: 36px;
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     background: transparent;
@@ -359,7 +490,7 @@ main {
 .btn-operator {
     color: var(--chalk-yellow);
     background: rgba(255, 217, 61, 0.1);
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
 .btn-func {
@@ -368,7 +499,7 @@ main {
 }
 
 .btn-adv {
-    color: #b19cd9;
+    color: #894aff;
     /* light purple */
     font-size: 1.2rem;
 }
@@ -376,7 +507,7 @@ main {
 .btn-equal {
     background: rgba(105, 219, 124, 0.2);
     color: var(--chalk-green);
-    font-size: 2rem;
+    font-size: 1.8rem;
     grid-column: 5;
     grid-row: 4 / span 2;
 }
@@ -447,6 +578,12 @@ main {
     margin: 2rem 0;
 }
 
+@media (max-width: 950px) {
+    .action-card {
+        width: 45%;
+    }
+}
+
 .action-card {
     background: transparent;
     border-radius: 20px;
@@ -487,17 +624,17 @@ main {
 }
 
 .mock-display-screen::before {
-    content: 'CALCULADORA ALICIA';
+    content: ' Calculadora de Alicia ';
     position: absolute;
-    top: 5px;
+    top: 7px;
     left: 0;
     width: 100%;
     text-align: center;
     color: white;
     font-family: sans-serif;
     font-weight: bold;
-    font-size: 0.75rem;
-    opacity: 0.8;
+    font-size: 0.85rem;
+    opacity: 0.9;
 }
 
 body.light-mode .mock-display-screen {
@@ -603,7 +740,7 @@ summary:hover {
 details p {
     padding: 1rem;
     margin-bottom: 0;
-    color: #ccc;
+    color: var(--text-color);
 }
 
 /* Footer */
@@ -619,24 +756,34 @@ footer {
 /* Responsive adjustments */
 @media (max-width: 600px) {
     .calculator-board {
-        padding: 1rem;
-        border-width: 10px;
+        padding: 0.3rem;
+        border-width: 6px;
     }
 
     .btn-chalk {
-        padding: 12px 2px;
-        font-size: 1.2rem;
+        padding: 6px 2px;
+        font-size: 1.1rem;
     }
 
     .main-result {
-        font-size: 2.8rem;
+        font-size: 2.1rem;
     }
 
     .content-section {
-        padding: 1.2rem;
+        padding: 1rem;
     }
 
     .calculator-keypad {
         gap: 4px;
+    }
+
+    .action-card {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    /* Ensure the guide image scales properly on tiny screens */
+    .mock-display-screen {
+        min-height: 200px;
     }
 }
