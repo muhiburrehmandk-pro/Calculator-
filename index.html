@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Alicia Online Gratis | Paso a Paso</title>
+    <meta name="description"
+        content="La Calculadora de Alicia online es una herramienta matemática gratis que muestra el procedimiento paso a paso. Ideal para estudiantes, suma, resta, multiplica y divide.">
+    <!-- Hreflang for internationalization -->
+    <link rel="alternate" hreflang="es" href="https://yourwebsite.com/" />
+    <link rel="alternate" hreflang="en" href="https://yourwebsite.com/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://yourwebsite.com/" />
+
+    <!-- Google Fonts for Chalkboard Look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Structured Data for FAQ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "¿Qué es la Calculadora de Alicia?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La Calculadora de Alicia es una calculadora matemática online diseñada para fines educativos. A diferencia de las calculadoras tradicionales, muestra el procedimiento paso a paso de las operaciones como suma, resta, multiplicación y división, simulando una pizarra escolar."
+        }
+      }, {
+        "@type": "Question",
+        "name": "¿Cómo usar la Calculadora de Alicia?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Simplemente ingresa los números usando el teclado interactivo o tu propio teclado, selecciona la operación matemática y presiona el botón de igual (=). El procedimiento paso a paso se mostrará en la pantalla."
+        }
+      }, {
+        "@type": "Question",
+        "name": "¿Es gratis?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí, es una herramienta matemática 100% gratis. No requiere registro ni costos ocultos para usar todas sus características, incluyendo el historial y los procedimientos."
+        }
+      }, {
+        "@type": "Question",
+        "name": "¿Funciona en móvil?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "¡Por supuesto! La calculadora de alicia online tiene un diseño responsivo ('mobile-first') que se adapta perfectamente a pantallas de teléfonos, tablets y computadoras de escritorio."
+        }
+      }, {
+        "@type": "Question",
+        "name": "¿Muestra el procedimiento paso a paso?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí, esa es su característica principal. Ya sea una suma con llevadas, una multiplicación vertical de varios dígitos, o una división larga, la calculadora con procedimiento mostrará el desglose exacto de cómo se llega al resultado."
+        }
+      }, {
+        "@type": "Question",
+        "name": "¿Puedo ver el historial de cálculos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "¡Sí! Cuenta con un historial de cálculos incorporado. Puedes revisar fácilmente tus operaciones previas tocando el botón de historial en la pantalla de la calculadora."
+        }
+      }]
+    }
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="header-controls">
+            <div class="lang-switch">
+                <span class="active">ES</span> | <a href="en/index.html">EN</a>
+            </div>
+            <button id="theme-toggle" class="btn-theme" aria-label="Cambiar modo claro/oscuro">☀️ Modo Claro</button>
+        </div>
+        <h1>Calculadora de Alicia Online Gratis</h1>
+    </header>
+
+    <main>
+        <section class="calculator-container">
+            <div class="calculator-board">
+                <div class="calculator-header">
+                    <button id="history-toggle" class="btn-chalk btn-action" aria-label="Ver Historial">📋
+                        Historial</button>
+                    <span class="brand-text">Calculadora de Alicia</span>
+                </div>
+
+                <div class="calculator-display" id="display-area">
+                    <div class="history-panel hidden" id="history-panel">
+                        <h3>Historial de Operaciones</h3>
+                        <ul id="history-list"></ul>
+                        <button id="clear-history" class="btn-chalk btn-danger">Borrar Historial</button>
+                    </div>
+
+                    <div class="step-by-step-area" id="step-by-step-area">
+                        <!-- Dynamic procedure will be shown here -->
+                    </div>
+                    <div class="main-result" id="main-result">0</div>
+                </div>
+
+                <div id="keypad-container" class="keypad-container">
+                    <div class="calculator-keypad">
+                        <!-- Row 1 (Operators) -->
+                        <button class="btn-chalk btn-operator" data-action="add" aria-label="Sumar">+</button>
+                        <button class="btn-chalk btn-operator" data-action="subtract" aria-label="Restar">−</button>
+                        <button class="btn-chalk btn-operator" data-action="multiply" aria-label="Multiplicar">×</button>
+                        <button class="btn-chalk btn-operator" data-action="divide" aria-label="Dividir">÷</button>
+                        <button class="btn-chalk btn-func" data-action="clear-all" aria-label="Borrar Todo">C/</button>
+
+                        <!-- Row 2 -->
+                        <button class="btn-chalk btn-num btn-yellow" data-value="7">7</button>
+                        <button class="btn-chalk btn-num btn-yellow" data-value="8">8</button>
+                        <button class="btn-chalk btn-num btn-yellow" data-value="9">9</button>
+                        <button class="btn-chalk btn-func" data-action="delete" aria-label="Borrar Último">B</button>
+                        <button class="btn-chalk btn-adv" data-action="sqrt" aria-label="Raíz Cuadrada">√x</button>
+
+                        <!-- Row 3 -->
+                        <button class="btn-chalk btn-num btn-blue" data-value="4">4</button>
+                        <button class="btn-chalk btn-num btn-blue" data-value="5">5</button>
+                        <button class="btn-chalk btn-num btn-blue" data-value="6">6</button>
+                        <button class="btn-chalk btn-adv" data-action="square" aria-label="Cuadrado">x²</button>
+                        <button class="btn-chalk btn-adv" data-action="factorize" aria-label="Factorizar">|</button>
+
+                        <!-- Row 4 -->
+                        <button class="btn-chalk btn-num btn-green" data-value="1">1</button>
+                        <button class="btn-chalk btn-num btn-green" data-value="2">2</button>
+                        <button class="btn-chalk btn-num btn-green" data-value="3">3</button>
+                        <button class="btn-chalk btn-num btn-red" data-value=".">.</button>
+                        <button class="btn-chalk btn-equal" data-action="calculate" aria-label="Calcular">=</button>
+
+                        <!-- Row 5 -->
+                        <button class="btn-chalk btn-num btn-red cell-4" data-value="0">0</button>
+                    </div>
+                </div>
+
+                <div id="result-actions" class="result-actions hidden">
+                    <button id="new-operation" class="btn-chalk btn-green">Nueva Operación</button>
+                </div>
+            </div>
+        </section>
+
+        <article class="content-section">
+            <section class="intro">
+                <h2>La mejor calculadora escolar online</h2>
+                <p>Bienvenido a la <strong>Calculadora de Alicia</strong>, la herramienta educativa definitiva para
+                    <em>aprender matemáticas visualmente</em>.
+                    A diferencia de otras calculadoras, nuestra <em>calculadora con procedimiento</em> está diseñada para simular una pizarra escolar. No solo te da el resultado final, sino que <strong>resuelve las matemáticas sin errores</strong> y detalla el procedimiento para llegar allí.
+                </p>
+            </section>
+
+            <section class="features">
+                <h2>Características de la Calculadora con Procedimiento</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Suma y Resta</h3>
+                        <p>Realiza operaciones básicas viendo claramente los números que llevas o pides prestados en el desglose vertical.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Multiplicación</h3>
+                        <p>Te mostramos la estructura de multiplicación tradicional, sumando productos parciales bajo una línea, ideal para aprender.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>División</h3>
+                        <p>Aprende con el formato clásico de división larga, restando paso a paso para encontrar el cociente y el residuo.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Raíz Cuadrada (SR)</h3>
+                        <p>Calcula rápidamente raíces cuadradas perfectas o decimales con nuestra función SR.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Factorización (|)</h3>
+                        <p>Desglosa cualquier número entero en sus factores primos viendo la típica línea divisoria vertical que se encuentra en las escuelas.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Historial de Cálculos</h3>
+                        <p>Gracias a esta <em>calculadora con historial</em>, nunca perderás el rastro de tus operaciones pasadas y podrás revisarlas cuando quieras.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="how-it-works">
+                <h2>Cómo Funciona la Calculadora de Alicia</h2>
+                <ul>
+                    <li><strong>Números (0-9):</strong> Toca para ingresar los dígitos de tu operación.</li>
+                    <li><strong>Operadores (+, -, ×, ÷):</strong> Selecciona la acción que deseas realizar.</li>
+                    <li><strong>C/ (Borrar Todo):</strong> Limpia la pantalla completamente y reinicia la operación actual.</li>
+                    <li><strong>B (Borrar Último):</strong> Elimina el último dígito ingresado si te equivocaste.</li>
+                    <li><strong>√ (Raíz Cuadrada):</strong> Ingresa un número y presiona √ para obtener su raíz cuadrada.</li>
+                    <li><strong>x² (Cuadrado):</strong> Ingresa un número y presiona x² para obtener su cuadrado.</li>
+                    <li><strong>| (Factorizar):</strong> Ingresa un número y presiona este botón para ver sus factores primos.</li>
+                    <li><strong>= (Igual):</strong> Presiona para obtener el resultado y ver el desglose del procedimiento paso a paso.</li>
+                </ul>
+            </section>
+
+            <section class="why-choose">
+                <h2>¿Por qué elegir la Calculadora de Alicia?</h2>
+                <ul>
+                    <li>100% <strong>Fácil de usar</strong> e intuitiva.</li>
+                    <li><strong>Ideal para estudiantes</strong>, padres que ayudan con la tarea y profesores.</li>
+                    <li><strong>Muestra procedimiento</strong> visual como en un cuaderno.</li>
+                    <li>Es una <strong>herramienta matemática gratis</strong>, sin costos ocultos.</li>
+                    <li><strong>No requiere registro</strong>, ni descargas.</li>
+                </ul>
+            </section>
+
+            <section class="faq">
+                <h2>Preguntas Frecuentes (FAQ)</h2>
+                <details>
+                    <summary>¿Qué es la Calculadora de Alicia?</summary>
+                    <p>La Calculadora de Alicia es una calculadora matemática online diseñada para fines educativos. A diferencia de las calculadoras tradicionales, muestra el procedimiento paso a paso de las operaciones como suma, resta, multiplicación y división, simulando una pizarra escolar.</p>
+                </details>
+                <details>
+                    <summary>¿Cómo usar la Calculadora de Alicia?</summary>
+                    <p>Simplemente ingresa los números usando el teclado interactivo o tu propio teclado, selecciona la operación matemática deseada y presiona el botón de igual (=). El procedimiento paso a paso se mostrará arriba del resultado final.</p>
+                </details>
+                <details>
+                    <summary>¿Es gratis?</summary>
+                    <p>Sí, es una herramienta educativa 100% gratis que siempre estará disponible para ayudar a los estudiantes de todos los niveles.</p>
+                </details>
+                <details>
+                    <summary>¿Funciona en móvil?</summary>
+                    <p>Por supuesto. El diseño fue concebido principalmente para dispositivos móviles, por lo que su interfaz y disposición de botones funcionan perfectamente en cualquier tamaño de pantalla de teléfono o tablet.</p>
+                </details>
+                <details>
+                    <summary>¿Muestra el procedimiento paso a paso?</summary>
+                    <p>¡Esa es nuestra especialidad! Más allá de dar el resultado final, ofrecemos un vistazo a los pasos intermedios, incluyendo acarreos y restas parciales tal como se enseñan en la escuela.</p>
+                </details>
+                <details>
+                    <summary>¿Puedo ver el historial de cálculos?</summary>
+                    <p>¡Sí! En la parte superior izquierda del marco de la pizarra, encontrarás el botón de historial, que puedes usar para mostrar u ocultar tus operaciones anteriores.</p>
+                </details>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Calculadora de Alicia - Herramienta Matemática Gratis. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="js/step-by-step.js"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/guide-render.js"></script>
+</body>
+
+</html>
