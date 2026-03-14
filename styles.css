@@ -1,0 +1,642 @@
+/* Base Styles & Chalkboard Theme */
+:root {
+    --board-bg: #1a251d;
+    /* Dark green chalkboard */
+    --board-frame: #8b5a2b;
+    /* Wooden frame */
+    --chalk-white: #ffffff;
+    --chalk-yellow: #ffff00;
+    --chalk-blue: #33ccff;
+    --chalk-green: #39ff14;
+    --chalk-red: #ff3333;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --font-heading: 'Kalam', cursive;
+    --font-chalk: 'Caveat', cursive;
+    --card-text: #cccccc;
+    /* Default dark mode card text */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--body-bg, #2b2b2b);
+    color: var(--text-color, #e0e0e0);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light Mode Overrides */
+body.light-mode {
+    --board-bg: #f8f9fa;
+    /* Whiteboard */
+    --board-frame: #ced4da;
+    /* Aluminum/Light frame */
+    --chalk-white: #212529;
+    /* Black marker */
+    --chalk-yellow: #e67700;
+    /* Darker Orange marker for contrast */
+    --chalk-blue: #1c7ed6;
+    /* Blue marker */
+    --chalk-green: #2b8a3e;
+    /* Green marker */
+    --chalk-red: #c92a2a;
+    /* Red marker */
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --body-bg: #e9ecef;
+    --text-color: #000000;
+    --card-text: #333333;
+    /* High contrast dark text for light mode */
+}
+
+/* Header & Navigation */
+header {
+    text-align: center;
+    padding: 16px 8px;
+    background-color: var(--header-bg, #111);
+    border-bottom: 2px solid var(--header-border, #444);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+body.light-mode {
+    --header-bg: #ffffff;
+    --header-border: #dee2e6;
+    --section-bg: #ffffff;
+    --details-bg: #f1f3f5;
+    --details-border: #dee2e6;
+    --card-bg: #f8f9fa;
+}
+
+.header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto 1rem auto;
+}
+
+.btn-theme {
+    background: transparent;
+    border: 1px solid var(--chalk-white);
+    color: var(--chalk-white);
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.lang-switch {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.lang-switch a {
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.lang-switch a:hover {
+    color: #fff;
+}
+
+.lang-switch .active {
+    color: var(--chalk-yellow);
+    font-weight: bold;
+}
+
+h1 {
+    font-family: var(--font-heading);
+    color: var(--chalk-white);
+    font-size: 2.2rem;
+    text-shadow: 2px 2px 4px var(--shadow-color);
+}
+
+/* Main Layout */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Calculator Container - Blackboard Style */
+.calculator-container {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 2rem;
+    perspective: 1000px;
+}
+
+.calculator-board {
+    background: var(--board-bg);
+    border: 10px solid var(--board-frame);
+    border-radius: 10px;
+    box-shadow:
+        inset 0 0 20px rgba(0, 0, 0, 0.8),
+        0 10px 30px rgba(0, 0, 0, 0.6);
+    padding: 0.8rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Chalk texture overlay */
+.calculator-board::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.05"/></svg>');
+    pointer-events: none;
+    z-index: 0;
+}
+
+.calculator-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    z-index: 1;
+    position: relative;
+}
+
+.brand-text {
+    font-family: var(--font-heading);
+    color: var(--chalk-white);
+    opacity: 0.7;
+    font-size: 1.2rem;
+}
+
+/* Display Area */
+.calculator-display {
+    background-color: rgba(0, 0, 0, 0.2);
+    min-height: 60px;
+    border-radius: 5px;
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.history-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(26, 37, 29, 0.95);
+    z-index: 10;
+    padding: 1rem;
+    overflow-y: auto;
+    border-radius: 5px;
+    backdrop-filter: blur(5px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.history-panel.hidden,
+.keypad-container.hidden,
+.result-actions.hidden {
+    display: none;
+}
+
+.history-panel h3 {
+    font-family: var(--font-heading);
+    color: var(--chalk-yellow);
+    margin-bottom: 1rem;
+    text-align: center;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+#history-list {
+    list-style: none;
+    font-family: var(--font-chalk);
+    font-size: 1.05rem;
+    /* Down from 1.2rem to make history more compact */
+    margin-bottom: 1rem;
+}
+
+#history-list li {
+    padding: 0.5rem 0;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: color 0.2s;
+}
+
+#history-list li:hover {
+    color: var(--chalk-blue);
+}
+
+.step-by-step-area {
+    font-family: var(--font-chalk);
+    color: var(--chalk-white);
+    min-height: 100px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Specialized classes to be used by JS for step-by-step rendering */
+.step-carry {
+    color: var(--chalk-red);
+    font-size: 1rem;
+    vertical-align: super;
+}
+
+.step-math-line {
+    border-bottom: 2px solid var(--chalk-white);
+    display: inline-block;
+}
+
+.step-operator {
+    color: var(--chalk-yellow);
+    margin-right: 0.5rem;
+}
+
+.main-result {
+    font-family: var(--font-chalk);
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: var(--chalk-white);
+    text-align: right;
+    word-break: break-all;
+    line-height: 0.9;
+}
+
+/* Keypad Grid */
+.calculator-keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) 1.2fr;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-chalk {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    /* Balanced size for the new grid */
+    padding: 5px 10px;
+    min-height: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--chalk-white);
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.result-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Chalk hover and active effects */
+.btn-chalk:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.btn-chalk:active {
+    transform: translateY(1px);
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Button Colors (Neon Chalk) */
+.btn-yellow {
+    color: var(--chalk-yellow);
+    border-color: rgba(255, 217, 61, 0.4);
+}
+
+.btn-blue {
+    color: var(--chalk-blue);
+    border-color: rgba(77, 171, 247, 0.4);
+}
+
+.btn-green {
+    color: var(--chalk-green);
+    border-color: rgba(105, 219, 124, 0.4);
+}
+
+.btn-red {
+    color: var(--chalk-red);
+    border-color: rgba(255, 107, 107, 0.4);
+}
+
+.btn-operator {
+    color: var(--chalk-yellow);
+    background: rgba(255, 217, 61, 0.1);
+    font-size: 1.8rem;
+}
+
+.btn-func {
+    color: var(--chalk-red);
+    font-size: 1.2rem;
+}
+
+.btn-adv {
+    color: #b19cd9;
+    /* light purple */
+    font-size: 1.2rem;
+}
+
+.btn-equal {
+    background: rgba(105, 219, 124, 0.2);
+    color: var(--chalk-green);
+    font-size: 2rem;
+    grid-column: 5;
+    grid-row: 4 / span 2;
+}
+
+.btn-action {
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-width: 1px;
+}
+
+.btn-danger {
+    font-size: 1rem;
+    padding: 8px;
+    border-color: var(--chalk-red);
+    color: var(--chalk-red);
+    width: 100%;
+    margin-top: 10px;
+}
+
+.cell-2 {
+    grid-column: span 2;
+}
+
+.cell-4 {
+    grid-column: span 4;
+}
+
+
+/* SEO Content Sections */
+.content-section {
+    width: 100%;
+    max-width: 800px;
+    background: var(--section-bg, #222);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s;
+}
+
+.content-section h2 {
+    font-family: var(--font-heading);
+    color: var(--chalk-yellow);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    border-bottom: 1px solid #444;
+    padding-bottom: 0.5rem;
+}
+
+.content-section h2:first-child {
+    margin-top: 0;
+}
+
+/* Generated Guide Visuals */
+.guide-svg {
+    max-width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    display: block;
+    overflow: visible;
+}
+
+.action-guides-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.action-card {
+    background: transparent;
+    border-radius: 20px;
+    border: 2px solid #e65100;
+    padding: 15px;
+    width: 280px;
+    /* Slightly wider to maintain large math sizes */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.action-card h3 {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.mock-display-screen {
+    background-color: #111;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    /* Forces the box to be perfectly square (width = height) */
+    border-radius: 15px;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Centers the math inside the square box to remove extra padding */
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-family: monospace;
+    /* Force monospace for alignment */
+    white-space: pre-wrap;
+    /* Preserve spaces for ASCII layout */
+}
+
+.mock-display-screen::before {
+    content: 'CALCULADORA ALICIA';
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+body.light-mode .mock-display-screen {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+}
+
+body.light-mode .mock-display-screen::before {
+    color: #333;
+}
+
+/* Base feature tweaks */
+.content-section p,
+.content-section ul {
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+}
+
+.guide-container {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.guide-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--header-border, #444);
+}
+
+.content-section p,
+.content-section ul {
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+}
+
+.content-section ul {
+    padding-left: 1.5rem;
+}
+
+.content-section li {
+    margin-bottom: 0.5rem;
+}
+
+/* Feature Grid */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.feature-card {
+    background: var(--card-bg, #2a2a2a);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--chalk-blue);
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card h3 {
+    font-family: var(--font-heading);
+    color: var(--chalk-blue);
+    margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    color: var(--card-text);
+}
+
+/* FAQ Details */
+details {
+    background: var(--details-bg, #2a2a2a);
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid var(--details-border, transparent);
+    transition: background-color 0.3s;
+}
+
+summary {
+    padding: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--details-bg, #333);
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--chalk-white);
+    border-bottom: 1px solid var(--details-border, transparent);
+}
+
+summary:hover {
+    background: #3a3a3a;
+}
+
+details p {
+    padding: 1rem;
+    margin-bottom: 0;
+    color: #ccc;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid var(--header-border, #444);
+    color: var(--text-color, #888);
+    font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .calculator-board {
+        padding: 1rem;
+        border-width: 10px;
+    }
+
+    .btn-chalk {
+        padding: 12px 2px;
+        font-size: 1.2rem;
+    }
+
+    .main-result {
+        font-size: 2.8rem;
+    }
+
+    .content-section {
+        padding: 1.2rem;
+    }
+
+    .calculator-keypad {
+        gap: 4px;
+    }
+}
